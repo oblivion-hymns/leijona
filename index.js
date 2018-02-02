@@ -92,7 +92,6 @@ function validateConfig(config)
  * Collects all files in the given dir based on the given config's exclusion patterns.
  * Returns a list of all file paths to be counted
  * @param string dir
- * @param any config
  * @return string[]
  */
 function gatherFiles(dir)
