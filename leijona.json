@@ -5,11 +5,18 @@
 		"numberSeparator": ","
 	},
 	"count": {
-		"source": true,
 		"comments": true,
 		"trivial": true,
 		"empty": true
 	},
+	"commentCharacters": [
+		"/*",
+		"*/",
+		"* ",
+		"//",
+		"#",
+		"<!--"
+	],
 	"exclude": {
 		"paths": [
 			".git/",

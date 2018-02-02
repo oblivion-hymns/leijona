@@ -1,25 +1,80 @@
 const fs = require('fs');
 
+var config = null;
 let baseDir = process.cwd().trim();
 
 function leijona()
 {
-	if (!baseDir || baseDir.length == 0)
-	{
-		console.error('Could not parse base directory. Exiting.');
-		process.exit(-1);
-	}
-
-	if (!baseDir.endsWith('/'))
-	{
-		baseDir += '/';
-	}
-
-	const config = require('./config.json');
+	validateBaseDir(baseDir);
+	baseDir = appendTrailingSlash(baseDir);
+	config = getConfig(baseDir);
 	validateConfig(config);
+	const allFiles = gatherFiles(baseDir);
+	const lineCounts = countFiles(allFiles);
+	console.log(lineCounts);
+}
 
-	const allFiles = gatherFiles(baseDir, config);
-	console.log(allFiles);
+/**
+ * Exits the application if the given directory cannot be found for any reason
+ * @param string dir
+ */
+function validateBaseDir(dir)
+{
+	if (!dir || dir.length == 0)
+	{
+		console.error('Could not determine base directory. Aborting.');
+		exit();
+	}
+}
+
+/**
+ * Appends a trailing slash to the given path, if it needs one.
+ * @param string path
+ * @return string
+ */
+function appendTrailingSlash(path)
+{
+	if (!path.endsWith('/'))
+	{
+		path += '/';
+	}
+
+	return path;
+}
+
+/**
+ * Attempts to retrieve the config file.
+ * @return any
+ */
+function getConfig(dir)
+{
+	try
+	{
+		const projectConfigPath = dir + 'leijona.json';
+		config = require(projectConfigPath);
+		console.log('Found project config at ' + projectConfigPath);
+	}
+	catch (e)
+	{
+		console.warn('Could not find leijona.json in project root. Using default configuration.');
+		console.warn('Error details: ', e);
+	}
+
+	if (!config)
+	{
+		try
+		{
+			config = require('./leijona.json');
+			console.log('Found default project config in leijona directory.');
+		}
+		catch (e)
+		{
+			console.error('Could not find default leijona.json. Aborting.');
+			exit();
+		}
+	}
+
+	return config;
 }
 
 /**
@@ -40,92 +95,168 @@ function validateConfig(config)
  * @param any config
  * @return string[]
  */
-function gatherFiles(dir, config)
+function gatherFiles(dir)
 {
-	const excludePaths = config.exclude.paths;
-	const excludeTypes = config.exclude.fileTypes;
-
 	let files = [];
 	const dirFiles = fs.readdirSync(dir);
 	for (let i = 0; i < dirFiles.length; i++)
 	{
 		const currentFile = dirFiles[i];
-		const fullPath = baseDir + currentFile;
+		let fullPath = dir + currentFile;
 		const relativePath = fullPath.replace(baseDir, '');
-
-		//Exclude paths
-		if (excludePaths.indexOf(relativePath) > -1 || excludePaths.indexOf(relativePath + '/') > -1)
-		{
-			console.log('Excluding ' + relativePath);
-		}
-		else
-		{
-			console.log('Inc ' + relativePath);
-		}
-
-		/*let fullPath = dir + currentFile;
-		console.log(fullPath);
 		const isDir = fs.lstatSync(fullPath).isDirectory();
-		if (isDir)
+		const fileIsIncluded = isIncluded(relativePath);
+
+
+		if (fileIsIncluded)
 		{
-			fullPath += '/';
-		}*/
-
-
+			if (isDir)
+			{
+				fullPath = appendTrailingSlash(fullPath);
+				files.push(...gatherFiles(fullPath));
+			}
+			else
+			{
+				files.push(fullPath);
+			}
+		}
 	}
 
 	return files;
 }
 
-leijona();
-
-return;
-
-
-
-
-
-function countLines(path, relativePath)
+/**
+ * Returns a total line count for all of the files in the given list
+ * @param string[] paths
+ * @return any
+ */
+function countFiles(paths)
 {
-	/**
-	 * 0 = filename
-	 * 1 = source
-	 * 2 = comments
-	 * 3 = trivial
-	 * 4 = empty
-	 * 5 = total
-	 */
-	let lineCount = [relativePath, 0, 0, 0, 0, 0];
-
-	const lines = fs.readFileSync(path, 'utf-8').split('\n');
-
-	for (let j = 0; j < lines.length; j++)
+	let lineCounts = [];
+	for (let i = 0; i < paths.length; i++)
 	{
-		const line = lines[j];
-		const transformedLine = line.trim();
-		if (transformedLine.length == 0)
+		const path = paths[i];
+		const lineCount = countLines(path);
+		lineCounts.push(lineCount);
+	}
+
+	return lineCounts;
+}
+
+/**
+ * Counts the number of lines in the given file
+ * @param string path
+ * @return any
+ */
+function countLines(path)
+{
+	let lineCount = {
+		path: path.replace(baseDir, ''),
+		source: 0,
+		comments: 0,
+		trivial: 0,
+		empty: 0,
+		total: 0
+	};
+
+	const includeComments = config.count.comments || true;
+	const includeTrivial = config.count.trivial || true;
+	const includeEmpty = config.count.empty || true;
+
+	const commentChars = config.commentCharacters;
+	let escapedCommentChars = [];
+	for (let i = 0; i < commentChars.length; i++)
+	{
+		const currentChar = config.commentCharacters[i];
+		const escapedChar = escapeStringForRegex(currentChar);
+		escapedCommentChars.push(escapedChar);
+	}
+
+	const commentCharRegex = new RegExp(escapedCommentChars.join('|'));
+	const lines = fs.readFileSync(path, 'utf-8').split('\n');
+	for (let i = 0; i < lines.length; i++)
+	{
+		const currentLine = lines[i];
+		const transformedLine = currentLine.trim();
+		if (includeEmpty && transformedLine.length == 0)
 		{
-			lineCount[4]++;
+			lineCount.empty++;
 		}
-		else if (transformedLine.startsWith('//') || transformedLine.startsWith('/*'))
+		else if (includeComments && currentLine.match(commentCharRegex))
 		{
-			lineCount[2]++;
+			lineCount.comments++;
 		}
-		else if (!transformedLine.match(/[0-9a-zA-Z]{1,}/))
+		else if (includeTrivial && !transformedLine.match(/[0-9a-zA-Z]{1,}/))
 		{
-			lineCount[3]++;
+			lineCount.trivial++;
 		}
 		else
 		{
-			lineCount[1]++;
+			lineCount.source++;
 		}
 	}
 
-	lineCount[5] = lineCount[1] + lineCount[2] + lineCount[3] + lineCount[4];
+	lineCount.total = lineCount.source + lineCount.comments + lineCount.trivial + lineCount.empty;
 	return lineCount;
 }
 
+/**
+ * Returns a mutation of the given string that is usable inside a regular expression
+ * @param string inputString
+ * @return string
+ */
+function escapeStringForRegex(inputString)
+{
+	//Ensure the input is a string
+	let transformedString = inputString + '';
+	transformedString = transformedString.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+	return transformedString;
+}
 
+/**
+ * Returns whether or not the given relative path must be included for line counting
+ * @param string relativePath
+ * @return boolean
+ */
+function isIncluded(relativePath)
+{
+	const excludePaths = config.exclude.paths;
+	const excludeTypes = config.exclude.fileTypes;
+
+	if (excludePaths.indexOf(relativePath) > -1)
+	{
+		//Relative path exclusion
+		return false;
+	}
+	else if (excludePaths.indexOf(relativePath + '/') > -1)
+	{
+		//Relative path exclusion sanity check
+		return false;
+	}
+
+	//Filetype exclusion
+	for (let i = 0; i < excludeTypes.length; i++)
+	{
+		const excludeType = excludeTypes[i];
+		if (relativePath.endsWith(excludeType))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Terminates script
+ */
+function exit()
+{
+	return process.exit(-1);
+}
+
+leijona();
+return;
 
 function addCommas(number)
 {
@@ -133,32 +264,6 @@ function addCommas(number)
 }
 
 exec(baseDir);
-
-let sourceTotal = 0;
-let commentsTotal = 0;
-let trivialTotal = 0;
-let emptyTotal = 0;
-let totalTotal = 0;
-for (let i = 0; i < lineCountData.length; i++)
-{
-	const data = lineCountData[i];
-	if (!isNaN(data[1]))
-	{
-		sourceTotal += data[1];
-		commentsTotal += data[2];
-		trivialTotal += data[3];
-		emptyTotal += data[4];
-		totalTotal += data[5];
-	}
-}
-
-sourceTotal = addCommas(sourceTotal);
-commentsTotal = addCommas(commentsTotal);
-trivialTotal = addCommas(trivialTotal);
-emptyTotal = addCommas(emptyTotal);
-totalTotal = addCommas(totalTotal);
-
-lineCountData.push(['TOTAL', sourceTotal, commentsTotal, trivialTotal, emptyTotal, totalTotal]);
 
 /*const resultsTable = textTable(lineCountData, {
 	hsep: ' | ',
