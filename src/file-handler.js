@@ -1,11 +1,15 @@
+const fs = require('fs');
+const StringManipulator = require('./string-manipulator');
+
 class FileHandler
 {
 	/**
 	 * @param string baseDir - Base directory of project
 	 */
-	constructor(baseDir)
+	constructor(baseDir, config)
 	{
 		this.baseDir = baseDir || '';
+		this.config = config || {};
 	}
 
 	/**
@@ -16,23 +20,25 @@ class FileHandler
 	 */
 	gatherFiles(dir)
 	{
+		const stringManipulator = new StringManipulator();
+
 		let files = [];
 		const dirFiles = fs.readdirSync(dir);
 		for (let i = 0; i < dirFiles.length; i++)
 		{
 			const currentFile = dirFiles[i];
 			let fullPath = dir + currentFile;
-			const relativePath = fullPath.replace(baseDir, '');
+			const relativePath = fullPath.replace(this.baseDir, '');
 			const isDir = fs.lstatSync(fullPath).isDirectory();
-			const fileIsIncluded = isIncluded(relativePath);
+			const fileIsIncluded = this.isPathIncluded(relativePath);
 
 
 			if (fileIsIncluded)
 			{
 				if (isDir)
 				{
-					fullPath = appendTrailingSlash(fullPath);
-					files.push(...gatherFiles(fullPath));
+					fullPath = stringManipulator.appendTrailingSlash(fullPath);
+					files.push(...this.gatherFiles(fullPath));
 				}
 				else
 				{
@@ -45,21 +51,37 @@ class FileHandler
 	}
 
 	/**
-	 * Returns a total line count for all of the files in the given list
-	 * @param string[] paths
-	 * @return any
+	 * Returns whether or not the given relative path must be included for line counting
+	 * @param string relativePath
+	 * @return boolean
 	 */
-	countFiles(paths)
+	isPathIncluded(relativePath)
 	{
-		let lineCounts = [];
-		for (let i = 0; i < paths.length; i++)
+		const excludePaths = this.config.exclude.paths;
+		const excludeTypes = this.config.exclude.fileTypes;
+
+		if (excludePaths.indexOf(relativePath) > -1)
 		{
-			const path = paths[i];
-			const lineCount = countLines(path);
-			lineCounts.push(lineCount);
+			//Relative path exclusion
+			return false;
+		}
+		else if (excludePaths.indexOf(relativePath + '/') > -1)
+		{
+			//Relative path exclusion sanity check
+			return false;
 		}
 
-		return lineCounts;
+		//Filetype exclusion
+		for (let i = 0; i < excludeTypes.length; i++)
+		{
+			const excludeType = excludeTypes[i];
+			if (relativePath.endsWith(excludeType))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
 
