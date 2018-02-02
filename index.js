@@ -153,16 +153,15 @@ function countLines(path)
 	let lineCount = {
 		path: path.replace(baseDir, ''),
 		source: 0,
-		comments: 0,
 		trivial: 0,
+		comments: 0,
 		empty: 0,
 		total: 0
 	};
 
-	const includeComments = config.count.comments || true;
-	const includeTrivial = config.count.trivial || true;
-	const includeEmpty = config.count.empty || true;
-
+	const includeComments = config.count.comments;
+	const includeTrivial = config.count.trivial;
+	const includeEmpty = config.count.empty;
 	const commentChars = config.commentCharacters;
 	let escapedCommentChars = [];
 	for (let i = 0; i < commentChars.length; i++)
