@@ -1,8 +1,9 @@
 const fs = require('fs');
 
+let baseDir = process.cwd().trim();
+
 function leijona()
 {
-	let baseDir = process.cwd().trim();
 	if (!baseDir || baseDir.length == 0)
 	{
 		console.error('Could not parse base directory. Exiting.');
@@ -18,6 +19,7 @@ function leijona()
 	validateConfig(config);
 
 	const allFiles = gatherFiles(baseDir, config);
+	console.log(allFiles);
 }
 
 /**
@@ -42,61 +44,46 @@ function gatherFiles(dir, config)
 {
 	const excludePaths = config.exclude.paths;
 	const excludeTypes = config.exclude.fileTypes;
-}
 
-
-
-
-
-
-
-
-function exec(baseDir, dir)
-{
-	const files = fs.readdirSync(dir);
-	for (let i = 0; i < files.length; i++)
+	let files = [];
+	const dirFiles = fs.readdirSync(dir);
+	for (let i = 0; i < dirFiles.length; i++)
 	{
-		const file = files[i];
-		let fullPath = dir + file;
-		const isDir = fs.lstatSync(fullPath).isDirectory();
+		const currentFile = dirFiles[i];
+		const fullPath = baseDir + currentFile;
+		const relativePath = fullPath.replace(baseDir, '');
 
-		let path = file;
+		//Exclude paths
+		if (excludePaths.indexOf(relativePath) > -1 || excludePaths.indexOf(relativePath + '/') > -1)
+		{
+			console.log('Excluding ' + relativePath);
+		}
+		else
+		{
+			console.log('Inc ' + relativePath);
+		}
+
+		/*let fullPath = dir + currentFile;
+		console.log(fullPath);
+		const isDir = fs.lstatSync(fullPath).isDirectory();
 		if (isDir)
 		{
-			path += '/';
-		}
+			fullPath += '/';
+		}*/
 
-		fullPath = dir + path;
 
-		//Determine if file or folder qualifies for exclusion
-		//Path exclusion
-		let excludePath = fullPath.replace(baseDir, '');
-
-		//Extension exclusion
-		let pathParts = excludePath.split('.');
-		const extension = pathParts[pathParts.length - 1];
-		const isWhitelisted = (excludes.indexOf(excludePath) == -1) && (excludeTypes.indexOf(extension) == -1);
-		if (isWhitelisted)
-		{
-			if (isDir)
-			{
-				exec(fullPath);
-			}
-			else
-			{
-				const lineCount = countLines(fullPath, excludePath);
-				lineCountData.push(lineCount);
-			}
-		}
 	}
+
+	return files;
 }
 
 leijona();
+
 return;
 
 
-let lineCountData = [];
-lineCountData.push(['File', 'Source', 'Comments', 'Trivial', 'Empty', 'Total']);
+
+
 
 function countLines(path, relativePath)
 {
