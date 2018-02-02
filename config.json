@@ -1,0 +1,30 @@
+{
+	"format": {
+		"type": "html",
+		"separateNumbers": true,
+		"numberSeparator": ","
+	},
+	"count": {
+		"source": true,
+		"comments": true,
+		"trivial": true,
+		"empty": true
+	},
+	"exclude": {
+		"paths": [
+			".git/",
+			"node_modules/",
+			"vendor/",
+			"package-lock.json",
+			"package.json"
+		],
+		"fileTypes": [
+			"gif",
+			"jpeg",
+			".jpg",
+			"png",
+			"svg",
+			"tiff"
+		]
+	}
+}

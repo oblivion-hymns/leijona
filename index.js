@@ -1,42 +1,99 @@
-// Counts lines in project
 const fs = require('fs');
-const textTable = require('text-table');
 
-let baseDir = process.argv[2] || process.cwd() || '';
-baseDir = baseDir.trim();
-
-if (!baseDir || baseDir.length == 0)
+function leijona()
 {
-	console.error('[line-count] Must provide a valid base directory as an argument, e.g. node line-count.js <dir>');
-	process.exit(-1);
+	let baseDir = process.cwd().trim();
+	if (!baseDir || baseDir.length == 0)
+	{
+		console.error('Could not parse base directory. Exiting.');
+		process.exit(-1);
+	}
+
+	if (!baseDir.endsWith('/'))
+	{
+		baseDir += '/';
+	}
+
+	const config = require('./config.json');
+	validateConfig(config);
+
+	const allFiles = gatherFiles(baseDir, config);
 }
 
-baseDir += '/';
+/**
+ * Validates the given configuration, outputting messages if any abnormalities are detected
+ * @param any config
+ */
+function validateConfig(config)
+{
+	const ConfigValidator = require('./src/config-validator');
+	const configValidator = new ConfigValidator();
+	configValidator.validate(config);
+}
 
-//const baseDir = path.join(__dirname + '/../');
-const excludes = [
-	'.git/',
-	'.nyc_output/',
-	'artifacts/',
-	'config/webpack/public/',
-	'docs/',
-	'node_modules/',
-	'public/code-coverage/',
-	'public/docs/',
-	'public/img/',
-	'public/plugins/dialog-polyfill/',
-	'public/js/app/bundle.js',
-	'public/lib/',
-	'vendor/',
-	'package-lock.json',
-	'package.json'
-];
+/**
+ * Collects all files in the given dir based on the given config's exclusion patterns.
+ * Returns a list of all file paths to be counted
+ * @param string dir
+ * @param any config
+ * @return string[]
+ */
+function gatherFiles(dir, config)
+{
+	const excludePaths = config.exclude.paths;
+	const excludeTypes = config.exclude.fileTypes;
+}
 
-const excludeTypes = [
-	'txt'
-];
 
-console.log('Counting line data...');
+
+
+
+
+
+
+function exec(baseDir, dir)
+{
+	const files = fs.readdirSync(dir);
+	for (let i = 0; i < files.length; i++)
+	{
+		const file = files[i];
+		let fullPath = dir + file;
+		const isDir = fs.lstatSync(fullPath).isDirectory();
+
+		let path = file;
+		if (isDir)
+		{
+			path += '/';
+		}
+
+		fullPath = dir + path;
+
+		//Determine if file or folder qualifies for exclusion
+		//Path exclusion
+		let excludePath = fullPath.replace(baseDir, '');
+
+		//Extension exclusion
+		let pathParts = excludePath.split('.');
+		const extension = pathParts[pathParts.length - 1];
+		const isWhitelisted = (excludes.indexOf(excludePath) == -1) && (excludeTypes.indexOf(extension) == -1);
+		if (isWhitelisted)
+		{
+			if (isDir)
+			{
+				exec(fullPath);
+			}
+			else
+			{
+				const lineCount = countLines(fullPath, excludePath);
+				lineCountData.push(lineCount);
+			}
+		}
+	}
+}
+
+leijona();
+return;
+
 
 let lineCountData = [];
 lineCountData.push(['File', 'Source', 'Comments', 'Trivial', 'Empty', 'Total']);
@@ -81,45 +138,7 @@ function countLines(path, relativePath)
 	return lineCount;
 }
 
-function exec(dir)
-{
-	const files = fs.readdirSync(dir);
-	for (let i = 0; i < files.length; i++)
-	{
-		const file = files[i];
-		let fullPath = dir + file;
-		const isDir = fs.lstatSync(fullPath).isDirectory();
 
-		let path = file;
-		if (isDir)
-		{
-			path += '/';
-		}
-
-		fullPath = dir + path;
-
-		//Determine if file or folder qualifies for exclusion
-		//Path exclusion
-		let excludePath = fullPath.replace(baseDir, '');
-
-		//Extension exclusion
-		let pathParts = excludePath.split('.');
-		const extension = pathParts[pathParts.length - 1];
-		const isWhitelisted = (excludes.indexOf(excludePath) == -1) && (excludeTypes.indexOf(extension) == -1);
-		if (isWhitelisted)
-		{
-			if (isDir)
-			{
-				exec(fullPath);
-			}
-			else
-			{
-				const lineCount = countLines(fullPath, excludePath);
-				lineCountData.push(lineCount);
-			}
-		}
-	}
-}
 
 function addCommas(number)
 {
@@ -154,10 +173,10 @@ totalTotal = addCommas(totalTotal);
 
 lineCountData.push(['TOTAL', sourceTotal, commentsTotal, trivialTotal, emptyTotal, totalTotal]);
 
-const resultsTable = textTable(lineCountData, {
+/*const resultsTable = textTable(lineCountData, {
 	hsep: ' | ',
 	align: ['l', 'r', 'r', 'r', 'r', 'r']
-});
-fs.writeFileSync('line-count.txt', resultsTable);
+});*/
+//fs.writeFileSync('line-count.txt', resultsTable);
 
-console.log('Done!');
+//console.log('Done!');
