@@ -1,12 +1,13 @@
+const fs = require('fs');
 const ConfigManager = require('./src/config-manager');
 const FileHandler = require('./src/file-handler');
 const LineCounter = require('./src/line-counter');
+const OutputGenerator = require('./src/output-generator');
 const StringManipulator = require('./src/string-manipulator');
-
-let baseDir = process.cwd().trim();
 
 function leijona()
 {
+	let baseDir = process.cwd().trim();
 	if (!baseDir || baseDir.length == 0)
 	{
 		console.error('Could not access base directory. Aborting.');
@@ -31,7 +32,13 @@ function leijona()
 
 	const lineCounter = new LineCounter(baseDir, config);
 	const lineCounts = lineCounter.countFiles(allFiles);
-	console.log(lineCounts);
+
+	const outputPath = baseDir + 'line-count.html';
+	const outputGenerator = new OutputGenerator(config);
+	const output = outputGenerator.generate(lineCounts);
+	fs.writeFileSync(outputPath, output);
+	console.log('Done! Wrote line count data to ' + outputPath);
+	exit();
 }
 
 /**
@@ -43,19 +50,3 @@ function exit()
 }
 
 leijona();
-
-
-/*function addCommas(number)
-{
-	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-exec(baseDir);*/
-
-/*const resultsTable = textTable(lineCountData, {
-	hsep: ' | ',
-	align: ['l', 'r', 'r', 'r', 'r', 'r']
-});*/
-//fs.writeFileSync('line-count.txt', resultsTable);
-
-//console.log('Done!');

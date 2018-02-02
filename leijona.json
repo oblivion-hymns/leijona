@@ -1,9 +1,5 @@
 {
-	"format": {
-		"type": "html",
-		"separateNumbers": true,
-		"numberSeparator": ","
-	},
+	"format": "html",
 	"count": {
 		"comments": true,
 		"trivial": true,

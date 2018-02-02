@@ -85,7 +85,9 @@ class LineCounter
 			}
 		}
 
+		console.log(lineCount.comments);
 		lineCount.total = lineCount.source + lineCount.comments + lineCount.trivial + lineCount.empty;
+		console.log(lineCount.total);
 		return lineCount;
 	}
 }
