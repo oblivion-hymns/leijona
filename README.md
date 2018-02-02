@@ -3,4 +3,4 @@ Leijona is a line count tool for modern applications. From the Finnish word for 
 "line".
 
 ## Pronounciation
-[_LAY_-uh-nuh](https://forvo.com/word/leijona/)
+_LAY_-uh-nuh (Hear it at https://forvo.com/word/leijona/)
