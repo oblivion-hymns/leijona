@@ -11,6 +11,17 @@ class LineCounter
 	{
 		this.baseDir = baseDir || '';
 		this.config = config || {};
+
+		const commentChars = this.config.commentCharacters;
+		let escapedCommentChars = [];
+		for (let i = 0; i < commentChars.length; i++)
+		{
+			const currentChar = commentChars[i];
+			const escapedChar = stringManipulator.escapeStringForRegex(currentChar);
+			escapedCommentChars.push(escapedChar);
+		}
+
+		this.commentCharRegex = new RegExp(escapedCommentChars.join('|'));
 	}
 
 	/**
@@ -52,32 +63,31 @@ class LineCounter
 			total: 0
 		};
 
-		const commentChars = this.config.commentCharacters;
-		let escapedCommentChars = [];
-		for (let i = 0; i < commentChars.length; i++)
-		{
-			const currentChar = commentChars[i];
-			const escapedChar = stringManipulator.escapeStringForRegex(currentChar);
-			escapedCommentChars.push(escapedChar);
-		}
-
-		const commentCharRegex = new RegExp(escapedCommentChars.join('|'));
 		const lines = fs.readFileSync(path, 'utf-8').split('\n');
 		for (let i = 0; i < lines.length; i++)
 		{
 			const currentLine = lines[i];
 			const transformedLine = currentLine.trim();
-			if (includeEmpty && transformedLine.length == 0)
+			if (!transformedLine.length)
 			{
-				lineCount.empty++;
+				if (includeEmpty)
+				{
+					lineCount.empty++;
+				}
 			}
-			else if (includeComments && currentLine.match(commentCharRegex))
+			else if (currentLine.match(this.commentCharRegex))
 			{
-				lineCount.comments++;
+				if (includeComments)
+				{
+					lineCount.comments++;
+				}
 			}
-			else if (includeTrivial && !transformedLine.match(/[0-9a-zA-Z]{1,}/))
+			else if (!transformedLine.match(/[0-9a-zA-Z]{1,}/))
 			{
-				lineCount.trivial++;
+				if (includeTrivial)
+				{
+					lineCount.trivial++;
+				}
 			}
 			else
 			{

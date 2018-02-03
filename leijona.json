@@ -3,7 +3,7 @@
 	"count": {
 		"comments": true,
 		"trivial": true,
-		"empty": true
+		"empty": false
 	},
 	"commentCharacters": [
 		"/*",
