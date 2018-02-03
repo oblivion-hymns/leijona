@@ -1,6 +1,6 @@
 {
-	"format": "csv",
-	"outputFile": "line-count.csv",
+	"format": "html",
+	"outputFile": "line-count.html",
 	"count": {
 		"comments": true,
 		"trivial": true,
