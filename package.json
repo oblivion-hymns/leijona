@@ -17,9 +17,7 @@
     "metrics",
     "leijona"
   ],
-  "bin": {
-    "leijona": "./index.js"
-  },
+  "bin": "./index.js",
   "author": "Brian Wilbur",
   "license": "GPL-3.0",
   "bugs": {
