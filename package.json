@@ -1,6 +1,6 @@
 {
   "name": "leijona",
-  "version": "1.0.5",
+  "version": "1.0.1",
   "description": "Line count tool for modern applications",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,6 @@
     "metrics",
     "leijona"
   ],
-  "bin": "./index.js",
   "author": "Brian Wilbur",
   "license": "GPL-3.0",
   "bugs": {
