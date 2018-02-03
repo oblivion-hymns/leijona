@@ -116,7 +116,7 @@ is optional, but recommended for slightly easier readability.
 Likewise, specific file types can be excluded altogether if you add them to the `fileTypes` list. You may include the
 leading `.` if you wish (e.g. `.mp3`), but `mp3` will work just fine.
 
-Since `leijona.json` can be overridden per project, you can have separate exclusions on a per-project basis.[]
+Since `leijona.json` can be overridden per project, you can have separate exclusions on a per-project basis.
 
 
 ## License
