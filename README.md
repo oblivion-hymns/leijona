@@ -87,9 +87,9 @@ you wish to count as comments.
 ```
 Leijona can blacklist files, directories, and filetypes from being counted.
 
-Each file or directory's relative path will be compared to the `paths` list. If it is found to match any entry in
-`paths` it will be excluded from being counted. The trailing `/` on directories is optional, but recommended for
-slightly easier readability.
+Each file or directory's path relative to the directory in which leijona is run will be compared to the `paths` list.
+If it is found to match any entry in `paths` it will be excluded from being counted. The trailing `/` on directories
+is optional, but recommended for slightly easier readability.
 
 Likewise, specific file types can be excluded altogether if you add them to the `fileTypes` list. You may include the
 leading `.` if you wish (e.g. `.mp3`), but `mp3` will work just fine.
