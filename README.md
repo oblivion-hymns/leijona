@@ -42,8 +42,7 @@ you are running the script from and it will override the default configuration.
 
 `csv` will generate a comma-separated list of values in a CSV file.
 
-`cli` will output the results directly to the command-line in which the script was run. This can also be used to pipe
-the contents of leijona to a file.
+More to come.
 
 ### Count Inclusions
 ```

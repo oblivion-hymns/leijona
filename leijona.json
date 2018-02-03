@@ -1,5 +1,5 @@
 {
-	"format": "html",
+	"format": "csv",
 	"count": {
 		"comments": true,
 		"trivial": true,
