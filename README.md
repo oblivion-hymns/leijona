@@ -16,13 +16,15 @@ Hear how to pronounce "leijona" [here](https://forvo.com/word/leijona/).
   - [Exclusions](#exclusions)
 - [License](#license)
 - [Issues](#issues)
+- [Troubleshooting](#troubleshooting)
 
 
 ## Installation
 Install the package globally using `npm i -g leijona`, or download the zip.
 
 ## Running
-If you downloaded it with npm, you can use npm to run the script in the directory you want to count.
+If you downloaded it with npm, you should be able to simply call `leijona` as a command-line executable
+from the directory you wish to count.
 
 If you downloaded the .zip, extract it, then run `node <location of the extracted leijona/ dir>` from the directory of the project you want to count.
 
@@ -128,3 +130,9 @@ credit but it's not necessary.
 
 ## Issues
 If you have issues, comments, or suggestions, please feel free to make an issue on Github.
+
+
+## Troubleshooting
+
+### Can't install package globally without sudo
+See [this link](https://docs.npmjs.com/getting-started/fixing-npm-permissions) to fix your node permissions.
