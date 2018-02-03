@@ -4,6 +4,7 @@ Leijona (_LAY_-uh-nuh) is a line count tool for modern applications. From the Fi
 
 Hear how to pronounce "leijona" [here](https://forvo.com/word/leijona/).
 
+
 ## Contents
 - [Installation](#installation)
 - [Running](#running)
@@ -15,8 +16,10 @@ Hear how to pronounce "leijona" [here](https://forvo.com/word/leijona/).
 - [License](#license)
 - [Issues](#issues)
 
+
 ## Installation
 Install the package globally using `npm i -g leijona`.
+
 
 ## Running
 Navigate to the directory of the project you want to count and run `node leijona`.
@@ -107,11 +110,13 @@ leading `.` if you wish (e.g. `.mp3`), but `mp3` will work just fine.
 
 Since `leijona.json` can be overridden per project, you can have separate exclusions on a per-project basis.[]
 
+
 ## License
 Leijona is licensed under the GNU General Public License v3.0. See LICENSE.txt in the project root for more information.
 
 Feel free to fork this repo and do whatever you want with it, as long as you keep it open source. I would appreciate
 credit but it's not necessary.
+
 
 ## Issues
 If you have issues, comments, or suggestions, please feel free to make an issue on Github.
