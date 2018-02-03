@@ -163,7 +163,7 @@ class HtmlGenerator
 			totals.total += lineCount.total;
 		}
 
-		let html = '<tr><td><strong>Totals</strong></td>';
+		let html = '<tr><td><strong>Total</strong></td>';
 		html += this.generateBodyNumberCell(totals.source);
 		if (this.includeComments)
 		{
