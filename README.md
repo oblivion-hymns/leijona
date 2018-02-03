@@ -98,3 +98,9 @@ Since `leijona.json` can be overridden per project, you can have separate exclus
 
 ## License
 Leijona is licensed under the GNU General Public License v3.0. See LICENSE.txt in the project root for more information.
+
+Feel free to fork this repo and do whatever you want with it, as long as you keep it open source. I would appreciate
+credit but it's not necessary.
+
+## Issues
+If you have issues, comments, or suggestions, please feel free to make them.
