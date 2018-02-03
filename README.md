@@ -103,4 +103,4 @@ Feel free to fork this repo and do whatever you want with it, as long as you kee
 credit but it's not necessary.
 
 ## Issues
-If you have issues, comments, or suggestions, please feel free to make them.
+If you have issues, comments, or suggestions, please feel free to make an issue on Github.
