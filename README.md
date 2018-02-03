@@ -4,6 +4,17 @@ Leijona (_LAY_-uh-nuh) is a line count tool for modern applications. From the Fi
 
 Hear how to pronounce "leijona" [here](https://forvo.com/word/leijona/).
 
+## Contents
+- [Installation](#installation)
+- [Running](#running)
+- [Configuration](#configuration)
+-- [Format](#format)
+-- [Count Inclusions](#count-inclusions)
+-- [Comment Characters](#comment-characters)
+-- [Exclusions](#exclusions)
+- [License](#license)
+- [Issues](#issues)
+
 ## Installation
 Install the package globally using `npm i -g leijona`.
 
