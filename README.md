@@ -13,6 +13,7 @@ Navigate to the directory of the project you want to count and run `node leijona
 ### Command line arguments
 There are no command line arguments for leijona. All configuration is done through `leijona.json`.
 
+
 ## Configuration
 There is plenty to configure to get leijona working just the way you want it to. In the project root there is a sample
 `leijona.json` file which contains all available options. You can include your own `leijona.json` file in the directory
@@ -24,7 +25,9 @@ you are running the script from and it will override the default configuration.
 ```
 
 `html` will generate an .html file with a table displaying the results.
-`csv` will generate a comma-separated list of values in a CSV file;
+
+`csv` will generate a comma-separated list of values in a CSV file.
+
 `cli` will output the results directly to the command-line in which the script was run. This can also be used to pipe
 the contents of leijona to a file.
 
@@ -91,6 +94,6 @@ slightly easier readability.
 Likewise, specific file types can be excluded altogether if you add them to the `fileTypes` list. You may include the
 leading `.` if you wish (e.g. `.mp3`), but `mp3` will work just fine.
 
-Since `leijona.json` can be overridden per project, you can have separate exclusions on a per-project basis.
+Since `leijona.json` can be overridden per project, you can have separate exclusions on a per-project basis.[]
 
 ## License
