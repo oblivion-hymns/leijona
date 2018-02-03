@@ -12,6 +12,7 @@ class LineCounter
 		this.baseDir = baseDir || '';
 		this.config = config || {};
 
+		const stringManipulator = new StringManipulator();
 		const commentChars = this.config.commentCharacters;
 		let escapedCommentChars = [];
 		for (let i = 0; i < commentChars.length; i++)
@@ -49,7 +50,6 @@ class LineCounter
 	 */
 	countLines(path)
 	{
-		const stringManipulator = new StringManipulator();
 		const includeComments = this.config.count.comments;
 		const includeTrivial = this.config.count.trivial;
 		const includeEmpty = this.config.count.empty;
