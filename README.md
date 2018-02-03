@@ -19,11 +19,12 @@ Hear how to pronounce "leijona" [here](https://forvo.com/word/leijona/).
 
 
 ## Installation
-Install the package globally using `npm i -g leijona`.
-
+Install the package globally using `npm i -g leijona`, or download the zip.
 
 ## Running
-Navigate to the directory of the project you want to count and run `node leijona`.
+If you downloaded it with npm, you can use npm to run the script in the directory you want to count.
+
+If you downloaded the .zip, extract it, then run `node <location of the extracted leijona/ dir>` from the directory of the project you want to count.
 
 ### Command line arguments
 There are no command line arguments for leijona. All configuration is done through `leijona.json`.
