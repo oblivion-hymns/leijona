@@ -9,7 +9,6 @@
 		}
 
 		table, th, td {
-			border: 1px solid rgba(0, 0, 0, 0.87);
 			border-collapse: collapse;
 			width: 100%;
 		}
@@ -28,6 +27,18 @@
 
 		td.total {
 			font-weight: bold;
+		}
+
+		tr:nth-child(odd) {
+			background-color: rgba(240, 240, 240, 0.54);
+		}
+
+		tr:nth-child(even) {
+			background-color: rgba(240, 240, 240, 0.12);
+		}
+
+		tr:hover {
+			background-color: rgba(225, 225, 225, 0.87);
 		}
 	</style>
 </head>
