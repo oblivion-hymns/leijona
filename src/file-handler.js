@@ -32,7 +32,6 @@ class FileHandler
 			const isDir = fs.lstatSync(fullPath).isDirectory();
 			const fileIsIncluded = this.isPathIncluded(relativePath);
 
-
 			if (fileIsIncluded)
 			{
 				if (isDir)

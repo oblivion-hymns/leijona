@@ -19,7 +19,10 @@
 			"node_modules/",
 			"vendor/",
 			"package-lock.json",
-			"package.json"
+			"package.json",
+			"line-count.txt",
+			"line-count.html",
+			"templates/"
 		],
 		"fileTypes": [
 			"flac",

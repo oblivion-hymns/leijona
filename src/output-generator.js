@@ -38,7 +38,7 @@ class OutputGenerator
 	 */
 	generateHtmlHeaderCell(content)
 	{
-		return '<th>' + content + '</th>';
+		return '\t\t\t\t<th>' + content + '</th>\n';
 	}
 
 	/**
@@ -59,7 +59,7 @@ class OutputGenerator
 		const empty = lineCount.empty;
 		const total = lineCount.total;
 
-		let html = '<td>';
+		let html = '\t\t\t<tr>\n';
 		html += this.generateHtmlBodyCell(path);
 		html += this.generateHtmlBodyCell(source);
 
@@ -79,7 +79,7 @@ class OutputGenerator
 		}
 
 		html += this.generateHtmlBodyNumberCell(total);
-		html += '</tr>';
+		html += '\t\t\t</tr>\n';
 		return html;
 	}
 
@@ -90,7 +90,7 @@ class OutputGenerator
 	 */
 	generateHtmlBodyCell(content)
 	{
-		return '<td>' + content + '</td>';
+		return '\t\t\t\t<td>' + content + '</td>\n';
 	}
 
 	/**
@@ -101,7 +101,7 @@ class OutputGenerator
 	 */
 	generateHtmlBodyNumberCell(content)
 	{
-		return '<td class="number">' + content + '</td>';
+		return '\t\t\t\t<td class="number">' + content + '</td>\n';
 	}
 
 	/**
@@ -134,7 +134,7 @@ class OutputGenerator
 		}
 
 		html += this.generateHtmlHeaderCell('Total');
-		html += `</tr><tbody>\n`;
+		html += `\t\t\t</tr>\n`;
 
 		for (let i = 0; i < lineCounts.length; i++)
 		{
