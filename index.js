@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const fs = require('fs');
 const ConfigManager = require('./src/config-manager');
 const FileHandler = require('./src/file-handler');
