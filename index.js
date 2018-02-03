@@ -33,7 +33,7 @@ function leijona()
 	const lineCounter = new LineCounter(baseDir, config);
 	const lineCounts = lineCounter.countFiles(allFiles);
 
-	const outputPath = baseDir + 'line-count.html';
+	const outputPath = baseDir + config.outputFile;
 	const outputGenerator = new OutputGenerator(config);
 	const output = outputGenerator.generate(lineCounts);
 

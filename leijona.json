@@ -1,5 +1,6 @@
 {
 	"format": "csv",
+	"outputFile": "line-count.csv",
 	"count": {
 		"comments": true,
 		"trivial": true,

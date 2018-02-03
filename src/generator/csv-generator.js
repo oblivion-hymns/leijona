@@ -47,9 +47,6 @@ class CsvGenerator
 		}
 
 		csv += this.generateFooter(lineCounts);
-
-		console.log(csv);
-
 		return csv;
 	}
 
@@ -120,7 +117,7 @@ class CsvGenerator
 			row += '' + totals.empty + ',';
 		}
 
-		row += '' + totals.total + '\n';
+		row += '' + totals.total;
 		return row;
 	}
 }
