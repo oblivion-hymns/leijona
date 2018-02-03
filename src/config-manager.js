@@ -6,7 +6,7 @@ class ConfigManager
 	 */
 	getConfig(dir)
 	{
-		let config = {};
+		let config = null;
 
 		try
 		{
@@ -16,16 +16,17 @@ class ConfigManager
 		}
 		catch (e)
 		{
-			console.warn('Could not find leijona.json in project root. Using default configuration.');
-			console.warn('Error details: ', e);
+			let msg = 'Could not find leijona.json in project root. ';
+			msg += 'It is possible that the file exists but is malformed or inaccessible. '
+			msg += 'Attempting to use default configuration.';
+			console.warn(msg);
 		}
 
 		if (!config)
 		{
 			try
 			{
-				config = require('./leijona.json');
-				console.log('Found default project config in leijona directory.');
+				config = require('./../leijona');
 			}
 			catch (e)
 			{

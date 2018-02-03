@@ -36,7 +36,9 @@ function leijona()
 	const outputPath = baseDir + 'line-count.html';
 	const outputGenerator = new OutputGenerator(config);
 	const output = outputGenerator.generate(lineCounts);
+
 	fs.writeFileSync(outputPath, output);
+
 	console.log('Done! Wrote line count data to ' + outputPath);
 	exit();
 }

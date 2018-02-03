@@ -22,12 +22,18 @@
 			"package.json"
 		],
 		"fileTypes": [
+			"flac",
 			"gif",
 			"jpeg",
-			".jpg",
+			"jpg",
+			"m4a",
+			"mov",
+			"mp3",
+			"ogg",
 			"png",
 			"svg",
-			"tiff"
+			"tiff",
+			"wav"
 		]
 	}
 }
