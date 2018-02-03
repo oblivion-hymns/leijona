@@ -10,6 +10,7 @@ Hear how to pronounce "leijona" [here](https://forvo.com/word/leijona/).
 - [Running](#running)
 - [Configuration](#configuration)
   - [Format](#format)
+  - [Output File](#output-file)
   - [Count Inclusions](#count-inclusions)
   - [Comment Characters](#comment-characters)
   - [Exclusions](#exclusions)
@@ -43,6 +44,13 @@ you are running the script from and it will override the default configuration.
 `csv` will generate a comma-separated list of values in a CSV file.
 
 More to come.
+
+### Output File
+```
+"outputFile": "line-count.html"
+```
+The name of the file to output results to. You should generally give this file the extension to match what you chose
+for the `format` option, but you have the freedom to choose any filename you wish.
 
 ### Count Inclusions
 ```
