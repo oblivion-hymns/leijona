@@ -97,3 +97,4 @@ leading `.` if you wish (e.g. `.mp3`), but `mp3` will work just fine.
 Since `leijona.json` can be overridden per project, you can have separate exclusions on a per-project basis.[]
 
 ## License
+Leijona is licensed under the GNU General Public License v3.0. See LICENSE.txt in the project root for more information.
