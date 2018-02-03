@@ -1,4 +1,7 @@
-class HtmlTemplateGenerator
+const fs = require('fs');
+const path = require('path');
+
+class HtmlGenerator
 {
 	constructor(config)
 	{
@@ -18,8 +21,46 @@ class HtmlTemplateGenerator
 		let html = this.generateHeader();
 		html += this.generateBody(lineCounts);
 		html += this.generateFooter(lineCounts);
-		html += `</tbody></table></body></html>`;
+		html += '</tbody></table></body></html>';
 		return html;
+	}
+
+	/**
+	 * Generates and returns an HTML header row
+	 * @return string
+	 */
+	generateHeader()
+	{
+		const templatePath = path.join(__dirname, '../templates/html-table-header.html');
+		let html = fs.readFileSync(templatePath, 'utf-8');
+		if (this.includeComments)
+		{
+			html += this.generateHeaderCell('Comments');
+		}
+
+		if (this.includeTrivial)
+		{
+			html += this.generateHeaderCell('Trivial');
+		}
+
+		if (this.includeEmpty)
+		{
+			html += this.generateHeaderCell('Empty');
+		}
+
+		html += this.generateHeaderCell('Total');
+		html += '\t\t\t</tr>\n';
+		return html;
+	}
+
+	/**
+	 * Generates and returns an HTML header cell
+	 * @param string content
+	 * @return string
+	 */
+	generateHeaderCell(content)
+	{
+		return '\t\t\t\t<th>' + content + '</th>\n';
 	}
 
 	/**
@@ -98,46 +139,6 @@ class HtmlTemplateGenerator
 	}
 
 	/**
-	 * Generates and returns an HTML header row
-	 * @return string
-	 */
-	generateHeaderRow()
-	{
-		const templatePath = path.resolve(__dirname, '../templates/html-table-header.html');
-		let html = fs.readFileSync(templatePath, 'utf-8');
-
-		if (this.includeComments)
-		{
-			html += this.generateHtmlHeaderCell('Comments');
-		}
-
-		if (this.includeTrivial)
-		{
-			html += this.generateHtmlHeaderCell('Trivial');
-		}
-
-		if (this.includeEmpty)
-		{
-			html += this.generateHtmlHeaderCell('Empty');
-		}
-
-		html += this.generateHtmlHeaderCell('Total');
-		html += `\t\t\t</tr>\n`;
-
-		return html;
-	}
-
-	/**
-	 * Generates and returns an HTML header cell
-	 * @param string content
-	 * @return string
-	 */
-	generateHeaderCell(content)
-	{
-		return '\t\t\t\t<th>' + content + '</th>\n';
-	}
-
-	/**
 	 * Generates and returns an HTML footer row
 	 * @param any[] lineCounts
 	 * @return string
@@ -183,3 +184,5 @@ class HtmlTemplateGenerator
 		return html;
 	}
 }
+
+module.exports = HtmlGenerator;

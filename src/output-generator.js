@@ -1,6 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
 class OutputGenerator
 {
 	/**
@@ -19,15 +16,10 @@ class OutputGenerator
 	 */
 	generate(lineCounts)
 	{
-		let output = '';
-		switch (this.config.format)
-		{
-			case 'html':
-			default:
-				output = this.generateHtmlOutput(lineCounts);
-				break;
-		}
-
+		const format = this.config.format;
+		const Generator = require('./generator/' + format + '-generator');
+		const generator = new Generator(this.config);
+		let output = generator.generate(lineCounts);
 		return output;
 	}
 }

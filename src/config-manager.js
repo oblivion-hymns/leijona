@@ -17,7 +17,7 @@ class ConfigManager
 		catch (e)
 		{
 			let msg = 'Could not find leijona.json in project root. ';
-			msg += 'It is possible that the file exists but is malformed or inaccessible. '
+			msg += 'It is possible that the file exists but is malformed or inaccessible. ';
 			msg += 'Attempting to use default configuration.';
 			console.warn(msg);
 		}
