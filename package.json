@@ -1,6 +1,6 @@
 {
   "name": "leijona",
-  "version": "1.0.4",
+  "version": "1.0.1",
   "description": "Line count tool for modern applications",
   "main": "index.js",
   "scripts": {
