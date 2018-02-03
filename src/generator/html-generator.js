@@ -164,23 +164,23 @@ class HtmlGenerator
 		}
 
 		let html = '<tr><td><strong>Totals</strong></td>';
-		html += this.generateHtmlBodyNumberCell(totals.source);
+		html += this.generateBodyNumberCell(totals.source);
 		if (this.includeComments)
 		{
-			html += this.generateHtmlBodyNumberCell(totals.comments);
+			html += this.generateBodyNumberCell(totals.comments);
 		}
 
 		if (this.includeTrivial)
 		{
-			html += this.generateHtmlBodyNumberCell(totals.trivial);
+			html += this.generateBodyNumberCell(totals.trivial);
 		}
 
 		if (this.includeEmpty)
 		{
-			html += this.generateHtmlBodyNumberCell(totals.empty);
+			html += this.generateBodyNumberCell(totals.empty);
 		}
 
-		html += this.generateHtmlBodyNumberCell(totals.total);
+		html += this.generateBodyNumberCell(totals.total);
 		return html;
 	}
 }
